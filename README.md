@@ -22,13 +22,14 @@ API REST demo xây dựng với Spring Boot 3, xác thực JWT, Spring Security 
 - **MySQL** (hoặc XAMPP với MySQL) — port mặc định `3306`
 
 ## Cấu trúc dự án
-
+git push origin main
 ```
 src/main/java/com/example/springboot_demo/
 ├── config/              # Cấu hình (JWT, Security)
 ├── cronjob/             # Nhiệm vụ định kỳ (dọn token hết hạn, blacklist)
 ├── databases/seeder/    # Seed dữ liệu
 ├── helpers/             # Filter JWT, GlobalExceptionHandler
+├── specifications/      # JPA Specifications (filter/search)
 ├── modules/users/
 │   ├── controllers/     # AuthController, UserController
 │   ├── entities/        # User, RefreshToken, BlacklistedToken
@@ -104,6 +105,35 @@ Chạy class `com.example.springboot_demo.DemoApplication`.
 | Method | Endpoint   | Mô tả                |
 |--------|------------|------------------------|
 | GET    | `/v1/me`   | Lấy thông tin user hiện tại |
+
+### User catalogues — cần JWT (Bearer token)
+
+| Method | Endpoint | Mô tả |
+|--------|----------|------|
+| GET | `/v1/user_catalogues` | Phân trang + filter |
+| GET | `/v1/user_catalogues/all` | Lấy tất cả (có filter + sort) |
+| POST | `/v1/user_catalogues` | Tạo mới |
+| PUT | `/v1/user_catalogues/{id}` | Cập nhật |
+
+#### Query params hỗ trợ
+
+- **pagination**: `page`, `perpage`
+- **keyword**: `keyword` (search theo `name`)
+- **sort**: `sort=<field>,<asc|desc>` (vd: `sort=id,asc`)
+- **simple filters**: truyền trực tiếp theo field của entity (vd: `publish=1`)
+- **complex filters**: dạng `field[operator]=value`
+  - `eq`, `gt`, `gte`, `lt`, `lte`, `in`
+  - `in` nhận danh sách phân tách bởi dấu phẩy (vd: `id[in]=1,2,3`)
+
+Ví dụ:
+
+```http
+GET /v1/user_catalogues?page=1&perpage=10&sort=id,asc&keyword=demo&publish=1
+```
+
+```http
+GET /v1/user_catalogues/all?sort=id,asc&publish=1&id[gt]=10
+```
 
 ### Khác
 

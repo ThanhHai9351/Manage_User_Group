@@ -50,6 +50,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
+        String path = request.getServletPath();
+        logger.debug("JWT filter: {} {}", request.getMethod(), path);
         try {
             final String authHeader = request.getHeader("Authorization");
             final String jwt;
@@ -109,8 +111,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
 
-                logger.info("User authenticated: {}", userDetails.getUsername());
-
                 // 6. Kiểm tra email token
                 if (!jwtService.getEmailFromToken(jwt).equals(userDetails.getUsername())) {
                     sendErrorResponse(request, response, HttpServletResponse.SC_UNAUTHORIZED,
@@ -124,7 +124,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-                logger.info("User authenticated: ", userDetails.getUsername());
+                logger.info("User authenticated: {}", userDetails.getUsername());
             }
 
             filterChain.doFilter(request, response);

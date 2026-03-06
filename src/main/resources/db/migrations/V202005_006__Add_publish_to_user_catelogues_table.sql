@@ -1,0 +1,2 @@
+ALTER TABLE user_catalouges
+ADD COLUMN publish TINYINT NOT NULL DEFAULT 1;
