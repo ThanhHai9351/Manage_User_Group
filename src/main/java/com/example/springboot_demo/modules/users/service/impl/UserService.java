@@ -22,7 +22,7 @@ import com.example.springboot_demo.services.BaseService;
 import com.example.springboot_demo.services.JwtService;
 
 @Service
-public class UserService extends BaseService implements UserServiceInterface {
+public class UserService implements UserServiceInterface {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
