@@ -40,172 +40,203 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 
 import com.example.springboot_demo.modules.users.mappers.UserCatalogueMapper;
+import com.example.springboot_demo.controllers.BaseController;
 
 @RestController
 @RequestMapping("/v1/user_catalogues")
-public class UserCatalogueController {
+public class UserCatalogueController
+        extends
+        BaseController<UserCatalogue, UserCatalogueResource, StoreRequest, UpdateRequest, UserCatalogueRepository> {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserCatalogueController.class);
+    // private static final Logger logger =
+    // LoggerFactory.getLogger(UserCatalogueController.class);
 
-    private final UserCatalogueServiceInterface userCatalogueService;
+    // private final UserCatalogueServiceInterface userCatalogueService;
 
-    @Autowired
-    private UserCatalogueRepository userCatalogueRepository;
+    // @Autowired
+    // private UserCatalogueRepository userCatalogueRepository;
 
-    private final UserCatalogueMapper userCatalogueMapper;
+    // private final UserCatalogueMapper userCatalogueMapper;
 
     public UserCatalogueController(UserCatalogueServiceInterface userCatalogueService,
-            UserCatalogueMapper userCatalogueMapper) {
-        this.userCatalogueService = userCatalogueService;
-        this.userCatalogueMapper = userCatalogueMapper;
+            UserCatalogueMapper userCatalogueMapper, UserCatalogueRepository userCatalogueRepository) {
+        super(userCatalogueService, userCatalogueMapper, userCatalogueRepository);
+
+        // this.userCatalogueService = userCatalogueService;
+        // this.userCatalogueMapper = userCatalogueMapper;
+        // this.userCatalogueRepository = userCatalogueRepository;
     }
 
-    @PostMapping(value = { "", "/" })
-    public ResponseEntity<?> create(@Valid @RequestBody StoreRequest request) {
-        try {
-            UserCatalogue userCatalogue = userCatalogueService.create(request);
+    // @PostMapping(value = { "", "/" })
+    // public ResponseEntity<?> create(@Valid @RequestBody StoreRequest request) {
+    // try {
+    // UserCatalogue userCatalogue = userCatalogueService.create(request);
 
-            // UserCatalogueResource userCatalogueRescource =
-            // UserCatalogueResource.builder()
-            // .id(userCatalogue.getId())
-            // .name(userCatalogue.getName())
-            // .publish(userCatalogue.getPublish())
-            // .build();
+    // // UserCatalogueResource userCatalogueRescource =
+    // // UserCatalogueResource.builder()
+    // // .id(userCatalogue.getId())
+    // // .name(userCatalogue.getName())
+    // // .publish(userCatalogue.getPublish())
+    // // .build();
 
-            UserCatalogueResource userCatalogueRescource = userCatalogueMapper.tResource(userCatalogue);
+    // UserCatalogueResource userCatalogueRescource =
+    // userCatalogueMapper.tResource(userCatalogue);
 
-            ApiResource<UserCatalogueResource> apiResource = ApiResource.ok(userCatalogueRescource,
-                    "User catalogue created successfully");
+    // ApiResource<UserCatalogueResource> apiResource =
+    // ApiResource.ok(userCatalogueRescource,
+    // "User catalogue created successfully");
 
-            return ResponseEntity.ok(apiResource);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(ApiResource.error("FAILED_TO_CREATE_USER_CATALOGUE",
-                    e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
-        }
-    }
+    // return ResponseEntity.ok(apiResource);
+    // } catch (Exception e) {
+    // return
+    // ResponseEntity.internalServerError().body(ApiResource.error("FAILED_TO_CREATE_USER_CATALOGUE",
+    // e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
+    // }
+    // }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody UpdateRequest request) {
-        try {
+    // @PutMapping("/{id}")
+    // public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody
+    // UpdateRequest request) {
+    // try {
 
-            UserCatalogue userCatalogue = userCatalogueService.update(id, request);
+    // UserCatalogue userCatalogue = userCatalogueService.update(id, request);
 
-            // UserCatalogueResource userCatalogueResource = UserCatalogueResource.builder()
-            // .id(userCatalogue.getId())
-            // .name(userCatalogue.getName())
-            // .publish(userCatalogue.getPublish())
-            // .build();
+    // // UserCatalogueResource userCatalogueResource =
+    // UserCatalogueResource.builder()
+    // // .id(userCatalogue.getId())
+    // // .name(userCatalogue.getName())
+    // // .publish(userCatalogue.getPublish())
+    // // .build();
 
-            UserCatalogueResource userCatalogueResource = userCatalogueMapper.tResource(userCatalogue);
+    // UserCatalogueResource userCatalogueResource =
+    // userCatalogueMapper.tResource(userCatalogue);
 
-            ApiResource<UserCatalogueResource> apiResource = ApiResource.ok(userCatalogueResource,
-                    "User catalogue updated successfully");
+    // ApiResource<UserCatalogueResource> apiResource =
+    // ApiResource.ok(userCatalogueResource,
+    // "User catalogue updated successfully");
 
-            return ResponseEntity.ok(apiResource);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResource.error("USER_CATALOGUE_NOT_FOUND",
-                    e.getMessage(), HttpStatus.NOT_FOUND));
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(ApiResource.error("FAILED_TO_UPDATE_USER_CATALOGUE",
-                    e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
-        }
-    }
+    // return ResponseEntity.ok(apiResource);
+    // } catch (EntityNotFoundException e) {
+    // return
+    // ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResource.error("USER_CATALOGUE_NOT_FOUND",
+    // e.getMessage(), HttpStatus.NOT_FOUND));
+    // } catch (Exception e) {
+    // return
+    // ResponseEntity.internalServerError().body(ApiResource.error("FAILED_TO_UPDATE_USER_CATALOGUE",
+    // e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
+    // }
+    // }
 
-    @GetMapping(value = { "", "/" })
-    public ResponseEntity<?> pagination(HttpServletRequest request) {
-        try {
+    // @GetMapping(value = { "", "/" })
+    // public ResponseEntity<?> pagination(HttpServletRequest request) {
+    // try {
 
-            Map<String, String[]> params = request.getParameterMap();
+    // Map<String, String[]> params = request.getParameterMap();
 
-            Page<UserCatalogue> userCatalogues = userCatalogueService.pagination(params);
+    // Page<UserCatalogue> userCatalogues = userCatalogueService.pagination(params);
 
-            // Page<UserCatalogueResource> userCatalogueResources = userCatalogues
-            // .map(userCatalogueService -> UserCatalogueResource.builder()
-            // .id(userCatalogueService.getId())
-            // .name(userCatalogueService.getName())
-            // .publish(userCatalogueService.getPublish())
-            // .build());
+    // // Page<UserCatalogueResource> userCatalogueResources = userCatalogues
+    // // .map(userCatalogueService -> UserCatalogueResource.builder()
+    // // .id(userCatalogueService.getId())
+    // // .name(userCatalogueService.getName())
+    // // .publish(userCatalogueService.getPublish())
+    // // .build());
 
-            Page<UserCatalogueResource> userCatalogueResources = userCatalogueMapper.toResourcePage(userCatalogues);
+    // Page<UserCatalogueResource> userCatalogueResources =
+    // userCatalogueMapper.toResourcePage(userCatalogues);
 
-            ApiResource<Page<UserCatalogueResource>> apiResource = ApiResource.ok(userCatalogueResources,
-                    "User catalogues fetched successfully");
+    // ApiResource<Page<UserCatalogueResource>> apiResource =
+    // ApiResource.ok(userCatalogueResources,
+    // "User catalogues fetched successfully");
 
-            return ResponseEntity.ok(apiResource);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(ApiResource.error("FAILED_TO_GET_ALL_USER_CATALOGUES",
-                    e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
-        }
-    }
+    // return ResponseEntity.ok(apiResource);
+    // } catch (Exception e) {
+    // return
+    // ResponseEntity.internalServerError().body(ApiResource.error("FAILED_TO_GET_ALL_USER_CATALOGUES",
+    // e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
+    // }
+    // }
 
-    @GetMapping("/list")
-    public ResponseEntity<?> list(HttpServletRequest request) {
-        try {
-            Map<String, String[]> params = request.getParameterMap();
-            List<UserCatalogue> userCatalogues = userCatalogueService.getAll(params);
+    // @GetMapping("/list")
+    // public ResponseEntity<?> list(HttpServletRequest request) {
+    // try {
+    // Map<String, String[]> params = request.getParameterMap();
+    // List<UserCatalogue> userCatalogues = userCatalogueService.getAll(params);
 
-            // List<UserCatalogueResource> userCatalogueResources =
-            // userCatalogues.stream().map(
-            // userCatalogue -> UserCatalogueResource.builder()
-            // .id(userCatalogue.getId())
-            // .name(userCatalogue.getName())
-            // .publish(userCatalogue.getPublish())
-            // .build())
-            // .collect(Collectors.toList());
+    // // List<UserCatalogueResource> userCatalogueResources =
+    // // userCatalogues.stream().map(
+    // // userCatalogue -> UserCatalogueResource.builder()
+    // // .id(userCatalogue.getId())
+    // // .name(userCatalogue.getName())
+    // // .publish(userCatalogue.getPublish())
+    // // .build())
+    // // .collect(Collectors.toList());
 
-            List<UserCatalogueResource> userCatalogueResources = userCatalogueMapper.toList(userCatalogues);
+    // List<UserCatalogueResource> userCatalogueResources =
+    // userCatalogueMapper.toList(userCatalogues);
 
-            ApiResource<List<UserCatalogueResource>> apiResource = ApiResource.ok(userCatalogueResources,
-                    "User catalogues fetched successfully");
+    // ApiResource<List<UserCatalogueResource>> apiResource =
+    // ApiResource.ok(userCatalogueResources,
+    // "User catalogues fetched successfully");
 
-            return ResponseEntity.ok(apiResource);
+    // return ResponseEntity.ok(apiResource);
 
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(ApiResource.error("FAILED_TO_GET_ALL_USER_CATALOGUES",
-                    e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
-        }
-    }
+    // } catch (Exception e) {
+    // return
+    // ResponseEntity.internalServerError().body(ApiResource.error("FAILED_TO_GET_ALL_USER_CATALOGUES",
+    // e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
+    // }
+    // }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Long id) {
-        try {
-            UserCatalogue userCatalogue = userCatalogueRepository.findById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("User catalogue not found"));
-            UserCatalogueResource userCatalogueResource = userCatalogueMapper.tResource(userCatalogue);
-            ApiResource<UserCatalogueResource> apiResource = ApiResource.ok(userCatalogueResource,
-                    "User catalogue fetched successfully");
-            return ResponseEntity.ok(apiResource);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResource.error("USER_CATALOGUE_NOT_FOUND",
-                    e.getMessage(), HttpStatus.NOT_FOUND));
-        }
-    }
+    // @GetMapping("/{id}")
+    // public ResponseEntity<?> getById(@PathVariable Long id) {
+    // try {
+    // UserCatalogue userCatalogue = userCatalogueRepository.findById(id)
+    // .orElseThrow(() -> new EntityNotFoundException("User catalogue not found"));
+    // UserCatalogueResource userCatalogueResource =
+    // userCatalogueMapper.tResource(userCatalogue);
+    // ApiResource<UserCatalogueResource> apiResource =
+    // ApiResource.ok(userCatalogueResource,
+    // "User catalogue fetched successfully");
+    // return ResponseEntity.ok(apiResource);
+    // } catch (EntityNotFoundException e) {
+    // return
+    // ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResource.error("USER_CATALOGUE_NOT_FOUND",
+    // e.getMessage(), HttpStatus.NOT_FOUND));
+    // }
+    // }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        try {
-            userCatalogueService.delete(id);
-            return ResponseEntity.ok(ApiResource.message("User catalogue deleted successfully", HttpStatus.OK));
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResource.error("USER_CATALOGUE_NOT_FOUND",
-                    e.getMessage(), HttpStatus.NOT_FOUND));
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(ApiResource.error("FAILED_TO_DELETE_USER_CATALOGUE",
-                    e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
-        }
-    }
+    // @DeleteMapping("/{id}")
+    // public ResponseEntity<?> delete(@PathVariable Long id) {
+    // try {
+    // userCatalogueService.delete(id);
+    // return ResponseEntity.ok(ApiResource.message("User catalogue deleted
+    // successfully", HttpStatus.OK));
+    // } catch (EntityNotFoundException e) {
+    // return
+    // ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResource.error("USER_CATALOGUE_NOT_FOUND",
+    // e.getMessage(), HttpStatus.NOT_FOUND));
+    // } catch (Exception e) {
+    // return
+    // ResponseEntity.internalServerError().body(ApiResource.error("FAILED_TO_DELETE_USER_CATALOGUE",
+    // e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
+    // }
+    // }
 
-    @DeleteMapping(value = { "", "/" })
-    public ResponseEntity<?> deleteMany(@RequestBody List<Long> ids) {
-        try {
-            userCatalogueService.deleteMutipleEntity(ids);
-            return ResponseEntity.ok(ApiResource.message("All user catalogues deleted successfully", HttpStatus.OK));
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResource.error("NO_USER_CATALOGUES_FOUND",
-                    e.getMessage(), HttpStatus.NOT_FOUND));
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(ApiResource.error("FAILED_TO_DELETE_ALL_USER_CATALOGUES",
-                    e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
-        }
-    }
+    // @DeleteMapping(value = { "", "/" })
+    // public ResponseEntity<?> deleteMany(@RequestBody List<Long> ids) {
+    // try {
+    // userCatalogueService.deleteMutipleEntity(ids);
+    // return ResponseEntity.ok(ApiResource.message("All user catalogues deleted
+    // successfully", HttpStatus.OK));
+    // } catch (EntityNotFoundException e) {
+    // return
+    // ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResource.error("NO_USER_CATALOGUES_FOUND",
+    // e.getMessage(), HttpStatus.NOT_FOUND));
+    // } catch (Exception e) {
+    // return
+    // ResponseEntity.internalServerError().body(ApiResource.error("FAILED_TO_DELETE_ALL_USER_CATALOGUES",
+    // e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR));
+    // }
+    // }
 }
