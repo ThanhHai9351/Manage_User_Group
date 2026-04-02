@@ -2,6 +2,7 @@ package com.example.springboot_demo.modules.users.entities;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,10 @@ public class UserCatalogue {
 
     @Column(name = "name", nullable = false, length = 50)
     private String name;
+
+    @ManyToMany
+    @JoinTable(name = "user_catalogue_permissions", joinColumns = @JoinColumn(name = "user_catalogue_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
+    private Set<Permission> permissions;
 
     @Column(name = "publish", nullable = false, columnDefinition = "TINYINT")
     private Integer publish;

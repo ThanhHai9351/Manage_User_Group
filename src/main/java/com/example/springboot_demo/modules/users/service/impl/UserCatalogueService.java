@@ -61,6 +61,11 @@ public class UserCatalogueService
         this.userCatalogueMapper = userCatalogueMapper;
     }
 
+    @Override
+    protected String[] getRelations() {
+        return new String[] { "permissions" };
+    }
+
     // @Override
     // @Transactional
     // public UserCatalogue create(StoreRequest request) {

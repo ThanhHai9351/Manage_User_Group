@@ -5,8 +5,8 @@ import com.example.springboot_demo.modules.users.entities.Permission;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-@Repository
+@Repository(value = "permissionRepository")
 public interface PermissionRepository
-                extends JpaRepository<Permission, Long>, JpaSpecificationExecutor<Permission> {
+        extends JpaRepository<Permission, Long>, JpaSpecificationExecutor<Permission> {
 
 }
